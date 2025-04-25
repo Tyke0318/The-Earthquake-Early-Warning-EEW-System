@@ -34,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Find'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+          BottomNavigationBarItem(icon: Icon(Icons.home, size: 28), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search, size: 28), label: 'Find'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings, size: 28), label: 'Setting'),
         ],
       ),
     );
@@ -65,8 +65,9 @@ class MainPage extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
+            radius: 22,
             backgroundColor: magnitudeToColor(magnitude),
-            child: Text(magnitude, style: TextStyle(color: Colors.white)),
+            child: Text(magnitude, style: TextStyle(color: Colors.white,fontSize:16, )),
           ),
           SizedBox(width: 12),
           Expanded(
@@ -97,15 +98,15 @@ class MainPage extends StatelessWidget {
           children: [
             Text(
               "Earthquake Early Warning",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
               textAlign: TextAlign.center, // 确保文本在每行居中
             ),
             Text(
               "SYSTEM",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 12),
             GridView.count(
               shrinkWrap: true,
               crossAxisCount: 4,
@@ -113,25 +114,18 @@ class MainPage extends StatelessWidget {
               mainAxisSpacing: 12,
               physics: NeverScrollableScrollPhysics(),
               children: [
-                _gridButton(context, Icons.warning, "Mock Alert", AlertScreen()),
+                _gridButton(context, Icons.warning, "Simulation\nAlert", AlertScreen()),
                 _gridButton(context, Icons.place_outlined, "Emergency Shelters", ShelterScreen()),
                 _gridButton(context, Icons.shopping_bag, "Emergency Tools", EmergencyToolsMarketScreen()),
                 _gridButton(context, Icons.menu_book, "Safety Guidelines", GuidelineScreen()),
               ],
             ),
             SizedBox(height: 24),
-            Text("History Earthquake Record", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 12),
+            Text("History Earthquake Record", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            SizedBox(height: 14),
             Expanded(
               child: ListView(
                 children: [
-                  _quakeItem(
-                    '3.1',
-                    'Xinjiang Kizilsu Prefecture Wushi County',
-                    '2024-12-31 16:05:19',
-                    '10 km',
-                    '75.75°, 39.99°',
-                  ),
                   _quakeItem(
                     '3.5',
                     'Xinjiang Kizilsu Prefecture Atushi City',
@@ -147,32 +141,11 @@ class MainPage extends StatelessWidget {
                     '120.66°, 23.54°',
                   ),
                   _quakeItem(
-                    '4.3',
-                    'Xinjiang Aksu Prefecture Kuche City',
-                    '2024-12-29 16:58:47',
-                    '15 km',
-                    '83.43°, 41.09°',
-                  ),
-                  _quakeItem(
-                    '3.2',
-                    'Xinjiang Kizilsu Prefecture Heqixian County',
-                    '2024-12-29 06:24:02',
-                    '12 km',
-                    '78.51°, 41.06°',
-                  ),
-                  _quakeItem(
                     '6.8',
                     'Qun Dao Islands',
                     '2024-12-27 20:47:35',
-                    '180 km',
+                    '18 km',
                     '151.8°, 46.9°',
-                  ),
-                  _quakeItem(
-                    '3',
-                    'Xinjiang Kizilsu Prefecture Heqixian County',
-                    '2024-12-27 10:34:11',
-                    '23 km',
-                    '77.71°, 40.75°',
                   ),
                   _quakeItem(
                     '3.3',
@@ -187,13 +160,6 @@ class MainPage extends StatelessWidget {
                     '2024-12-27 05:02:24',
                     '30 km',
                     '142.05°, 30.45°',
-                  ),
-                  _quakeItem(
-                    '3',
-                    'Sichuan Yibin City Chang',
-                    '2024-12-27 00:17:59',
-                    '10 km',
-                    '104.89°, 28.36°',
                   ),
                   _quakeItem(
                     '3.1',
@@ -224,7 +190,7 @@ class MainPage extends StatelessWidget {
                     '106.62°, 40.04°',
                   ),
                   _quakeItem(
-                    '3',
+                    '3.0',
                     'Ningsia Yinchuan City Yongning County',
                     '2024-12-24 20:56:06',
                     '14 km',
@@ -259,7 +225,7 @@ class MainPage extends StatelessWidget {
                     '-154.15°, 55.95°',
                   ),
                   _quakeItem(
-                    '3',
+                    '3.0',
                     'Xinjiang Aksu Prefecture Shaya County',
                     '2024-12-22 11:07:30',
                     '10 km',
@@ -280,7 +246,7 @@ class MainPage extends StatelessWidget {
                     '78.88°, 34.15°',
                   ),
                   _quakeItem(
-                    '3',
+                    '4.7',
                     'Xinjiang Aksu Prefecture Baicheng County',
                     '2024-12-21 12:49:03',
                     '10 km',
@@ -292,27 +258,6 @@ class MainPage extends StatelessWidget {
                     '2024-12-21 02:32:25',
                     '10 km',
                     '92.26°, 29.83°',
-                  ),
-                  _quakeItem(
-                    '3.6',
-                    'Inner Mongolia Hulunbuir City Genhe City',
-                    '2024-12-19 08:59:37',
-                    '18 km',
-                    '123.17°, 49.93°',
-                  ),
-                  _quakeItem(
-                    '3.8',
-                    'Yunnan Dali Prefecture Bin',
-                    '2024-12-19 00:46:41',
-                    '10 km',
-                    '100.5°, 25.96°',
-                  ),
-                  _quakeItem(
-                    '3.3',
-                    'Xinjiang Aksu Prefecture Korla City',
-                    '2024-12-18 18:01:05',
-                    '17 km',
-                    '78.29°, 40.08°',
                   ),
                 ],
               ),
@@ -330,11 +275,11 @@ class MainPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 26,
-            child: Icon(icon, size: 26),
+            radius: 24, backgroundColor: const Color.fromARGB(255, 203, 203, 203).withOpacity(0.1),
+            child: Icon(icon, size: 28, color: const Color.fromARGB(255, 38, 117, 255),),
           ),
-          SizedBox(height: 6),
-          Text(label, style: TextStyle(fontSize: 12)),
+          SizedBox(height: 8),
+          Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,), textAlign: TextAlign.center,), 
         ],
       ),
     );

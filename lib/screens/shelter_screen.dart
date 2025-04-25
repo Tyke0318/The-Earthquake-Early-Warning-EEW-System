@@ -3,7 +3,25 @@ import 'package:flutter/material.dart';
 class ShelterScreen extends StatelessWidget {
   final List<Map<String, dynamic>> shelters = [
     {
-      "name": "市体育馆应急避难所",
+      "name": "四川大学江安校区匹兹堡学院新大楼（南校区）",
+      "distance": 0.2,
+      "capacity": "可容纳3000人",
+      "facilities": ["饮用水", "临时厕所", "医疗站"],
+      "coordinates": [31.2287, 121.4812],
+      "contact": "021-11223344",
+      "openStatus": true,
+    },
+    {
+      "name": "四川大学江安校区体育场",
+      "distance": 0.8,
+      "capacity": "可容纳2000人",
+      "facilities": ["饮用水", "临时厕所"],
+      "coordinates": [31.2287, 121.4812],
+      "contact": "021-11223344",
+      "openStatus": false, // 临时关闭
+    },
+    {
+      "name": "双流区体育馆应急避难所",
       "distance": 1.2,
       "capacity": "可容纳5000人",
       "facilities": ["医疗站", "饮用水", "临时厕所", "物资发放"],
@@ -18,11 +36,20 @@ class ShelterScreen extends StatelessWidget {
       "facilities": ["医疗点", "简易帐篷", "充电站"],
       "coordinates": [31.2356, 121.4789],
       "contact": "021-87654321",
-      "openStatus": true,
+      "openStatus": true
+    },
+    {
+      "name": "双流机场航站楼",
+      "distance": 4.1,
+      "capacity": "可容纳18000人",
+      "facilities": ["饮用水", "临时厕所", "医疗点", "简易帐篷"],
+      "coordinates": [31.2287, 121.4812],
+      "contact": "021-11223344",
+      "openStatus": true
     },
     {
       "name": "人民公园应急避难所",
-      "distance": 3.1,
+      "distance": 8.1,
       "capacity": "可容纳2000人",
       "facilities": ["饮用水", "临时厕所"],
       "coordinates": [31.2287, 121.4812],
