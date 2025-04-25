@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'alert_screen.dart';
 import 'shelter_screen.dart';
-import 'emergency_tools_market_screen.dart';
+import 'emergency_supply_list_screen.dart';
 import 'guideline_screen.dart';
 import 'find_screen.dart';
 import 'setting_screen.dart';
@@ -116,7 +116,7 @@ class MainPage extends StatelessWidget {
               children: [
                 _gridButton(context, Icons.warning, "Simulation\nAlert", AlertScreen()),
                 _gridButton(context, Icons.place_outlined, "Emergency Shelters", ShelterScreen()),
-                _gridButton(context, Icons.shopping_bag, "Emergency Tools", EmergencyToolsMarketScreen()),
+                _gridButton(context, Icons.shopping_bag, "Emergency Tools", EmergencySupplyListScreen()),
                 _gridButton(context, Icons.menu_book, "Safety Guidelines", GuidelineScreen()),
               ],
             ),

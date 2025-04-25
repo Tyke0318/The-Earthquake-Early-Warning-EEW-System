@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.1.11
+  geolocator: ^9.0.1  # 请确保使用最新的版本
+  intl: ^0.18.1 # 用于日期格式化
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8

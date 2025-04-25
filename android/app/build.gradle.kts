@@ -9,6 +9,7 @@ android {
     namespace = "com.example.eer"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"  // 设置 NDK 版本
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

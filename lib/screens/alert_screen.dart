@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AlertScreen extends StatefulWidget {
   const AlertScreen({super.key});
@@ -9,26 +10,44 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
-  int _countdown = 20;
+  int _countdown = 30; // 动态倒计时
+  double _selectedMagnitude = 3.5; // 默认3.5级
   Timer? _timer;
-  Color _warningColor = Colors.orange; // 根据预警等级变化的颜色
+  Color _warningColor = Colors.green; // 根据预警等级变化的颜色
 
   @override
   void initState() {
     super.initState();
     startCountdown();
     // 模拟根据震级设置预警颜色
-    _setWarningColor(5.0);
+    _setWarningColor(_selectedMagnitude); // 初始化时设置颜色
+  }
+
+  // 新增方法：根据震级初始化倒计时
+  void _initCountdown() {
+    // 停止原有计时器
+    _timer?.cancel();
+    
+    // 计算倒计时（示例算法：震级越大时间越短）
+    final baseTime = 30;
+    final magnitudeFactor = _selectedMagnitude.clamp(5.0, 9.0);
+    _countdown = (baseTime - (magnitudeFactor * 2)).toInt().clamp(10, 30);
+    
+    // 启动新计时器
+    startCountdown();
+    
+    // 更新颜色
+    _setWarningColor(_selectedMagnitude);
   }
 
   void _setWarningColor(double magnitude) {
     setState(() {
-      if (magnitude >= 7.0) {
+      if (magnitude >= 6.0) {
         _warningColor = Colors.red;
-      } else if (magnitude >= 5.0) {
+      } else if (magnitude >= 4.5) {
         _warningColor = Colors.orange;
       } else {
-        _warningColor = Colors.yellow;
+        _warningColor = Colors.green;
       }
     });
   }
@@ -78,16 +97,49 @@ class _AlertScreenState extends State<AlertScreen> {
           children: [
 
             // 当前位置信息
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                "当前位置",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // 返回按钮
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                    color: Colors.grey[600],
+                    iconSize: 24,
+                    onPressed: () {
+                      // 导航返回上级页面
+                      if (Navigator.canPop(context)) {
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+    
+                  // 当前位置文字
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "当前位置：成都市双流区四川大学江安校区", // 可替换为动态位置数据
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+    
+                  // 设置按钮
+                  IconButton(
+                    icon: const Icon(Icons.tune_rounded),
+                    color: Colors.grey[600],
+                    iconSize: 24,
+                    onPressed: _showMagnitudeDialog, // 触发震级选择对话框
+                    tooltip: '设置预警等级', // 长按提示
+                  ),
+                ],
               ),
-            ),
 
             const SizedBox(height: 20),
 
@@ -144,9 +196,9 @@ class _AlertScreenState extends State<AlertScreen> {
 
                     // 地震信息
                     _buildQuakeInfo(
-                      magnitude: '8.0',
-                      location: '四川成都模拟震中',
-                      time: '2025-04-14 14:30',
+                      magnitude: '${_selectedMagnitude.toStringAsFixed(1)}', // 动态绑定
+                      location: '四川成都双流区（模拟震中）',
+                      time: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
                       depth: '15 km',
                       coordinates: '104.06°, 30.67°',
                     ),
@@ -221,6 +273,82 @@ class _AlertScreenState extends State<AlertScreen> {
       ),
     );
   }
+
+  // 添加震级选择对话框方法
+void _showMagnitudeDialog() {
+  // 临时变量保存输入值
+  double tempMagnitude = _selectedMagnitude;
+  
+  showDialog(
+    context: context,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            title: const Text('设置预警震级'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 输入框
+                TextField(
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  decoration: const InputDecoration(
+                    labelText: '输入预警震级',
+                    hintText: '例如：6.5',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.landscape_rounded),
+                  ),
+                  onChanged: (value) {
+                    // 实时验证输入
+                    final parsed = double.tryParse(value);
+                    if (parsed != null && parsed >= 0) {
+                      setDialogState(() => tempMagnitude = parsed);
+                    }
+                  },
+                ),
+                
+                // 快捷按钮
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  children: [5.0, 6.0, 7.0].map((mag) {
+                    return ChoiceChip(
+                      label: Text("${mag}级"),
+                      selected: tempMagnitude == mag,
+                      onSelected: (selected) {
+                        if (selected) {
+                          setDialogState(() => tempMagnitude = mag);
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('取消'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // 更新主界面状态
+                  setState(() {
+                    _selectedMagnitude = tempMagnitude;
+                    _setWarningColor(tempMagnitude);
+                    _initCountdown(); // 关键：重新初始化倒计时
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text('确认'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+}
 
   Widget _buildQuakeInfo({
     required String magnitude,
