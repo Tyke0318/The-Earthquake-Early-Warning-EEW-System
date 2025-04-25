@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:eer/screens/global_contacts.dart';
 
 class AlertScreen extends StatefulWidget {
   const AlertScreen({super.key});
@@ -76,7 +77,7 @@ class _AlertScreenState extends State<AlertScreen> {
         Navigator.pushNamed(context, '/shelter');
         break;
       case 1:
-        Navigator.pushNamed(context, '/emergency');
+        _showEmergencyContacts(context);
         break;
       case 2:
         Navigator.pushNamed(context, '/flashlight');
@@ -119,7 +120,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        "当前位置：成都市双流区四川大学江安校区", // 可替换为动态位置数据
+                        "Current Position: 双流区四川大学江安校区", // 可替换为动态位置数据
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -136,7 +137,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     color: Colors.grey[600],
                     iconSize: 24,
                     onPressed: _showMagnitudeDialog, // 触发震级选择对话框
-                    tooltip: '设置预警等级', // 长按提示
+                    tooltip: 'Set the early warning level', // 长按提示
                   ),
                 ],
               ),
@@ -152,7 +153,7 @@ class _AlertScreenState extends State<AlertScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  "地震波 ${_countdown > 0 ? "即将到达" : "已到达"}",
+                  "Seismic Waves ${_countdown > 0 ? "Incoming" : "Arrived"}",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -186,7 +187,7 @@ class _AlertScreenState extends State<AlertScreen> {
                       ),
                     ),
                     const Text(
-                      "秒",
+                      "Sec",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black87,
@@ -197,7 +198,7 @@ class _AlertScreenState extends State<AlertScreen> {
                     // 地震信息
                     _buildQuakeInfo(
                       magnitude: '${_selectedMagnitude.toStringAsFixed(1)}', // 动态绑定
-                      location: '四川成都双流区（模拟震中）',
+                      location: '四川省成都市双流区 (Simulated Epicenter)',
                       time: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
                       depth: '15 km',
                       coordinates: '104.06°, 30.67°',
@@ -216,7 +217,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    "避险建议:",
+                    "Emergency Protocols:",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -224,10 +225,10 @@ class _AlertScreenState extends State<AlertScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  _GuidelineText("1. 保持冷静，迅速采取避险措施"),
-                  _GuidelineText("2. 远离窗户、悬挂物和高大家具"),
-                  _GuidelineText("3. 不要使用电梯"),
-                  _GuidelineText("4. 选择坚固的桌子下或内墙角躲避"),
+                  _GuidelineText("1. Stay calm and act immediately"),
+                  _GuidelineText("2. Avoid windows, hanging objects and tall furniture"),
+                  _GuidelineText("3. Do NOT use elevators"),
+                  _GuidelineText("4. Shelter under sturdy tables or in corners"),
                 ],
               ),
             ),
@@ -250,22 +251,22 @@ class _AlertScreenState extends State<AlertScreen> {
           children: [
             _BottomIcon(
               icon: Icons.place_outlined,
-              label: "避难场所",
+              label: "Shelters",
               onTap: () => _onItemTapped(0),
             ),
             _BottomIcon(
               icon: Icons.contacts_outlined,
-              label: "紧急联系人",
+              label: "Emergency Call",
               onTap: () => _onItemTapped(1),
             ),
             _BottomIcon(
               icon: Icons.highlight_outlined,
-              label: "手电筒",
+              label: "Flashlight",
               onTap: () => _onItemTapped(2),
             ),
             _BottomIcon(
               icon: Icons.menu_book_outlined,
-              label: "避险指南",
+              label: "Guidelines",
               onTap: () => _onItemTapped(3),
             ),
           ],
@@ -285,7 +286,7 @@ void _showMagnitudeDialog() {
       return StatefulBuilder(
         builder: (context, setDialogState) {
           return AlertDialog(
-            title: const Text('设置预警震级'),
+            title: const Text('Select warning magnitude'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -293,8 +294,8 @@ void _showMagnitudeDialog() {
                 TextField(
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: const InputDecoration(
-                    labelText: '输入预警震级',
-                    hintText: '例如：6.5',
+                    labelText: 'Enter warning magnitude',
+                    hintText: 'Example: 6.5',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.landscape_rounded),
                   ),
@@ -313,7 +314,7 @@ void _showMagnitudeDialog() {
                   spacing: 8,
                   children: [5.0, 6.0, 7.0].map((mag) {
                     return ChoiceChip(
-                      label: Text("${mag}级"),
+                      label: Text("${mag}M"),
                       selected: tempMagnitude == mag,
                       onSelected: (selected) {
                         if (selected) {
@@ -328,7 +329,7 @@ void _showMagnitudeDialog() {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('取消'),
+                child: const Text('Cancel'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -340,7 +341,7 @@ void _showMagnitudeDialog() {
                   });
                   Navigator.pop(context);
                 },
-                child: const Text('确认'),
+                child: const Text('Enter'),
               ),
             ],
           );
@@ -372,41 +373,49 @@ void _showMagnitudeDialog() {
       ),
       child: Column(
         children: [
-          _buildInfoRow('震级', '$magnitude级'),
-          _buildInfoRow('位置', location),
-          _buildInfoRow('时间', time),
-          _buildInfoRow('深度', depth),
-          _buildInfoRow('坐标', coordinates),
+          _buildInfoRow('Magnitude', '$magnitude M', minLabelWidth: 100),
+          _buildInfoRow('Location', location, minLabelWidth: 100),
+          _buildInfoRow('Time', time, minLabelWidth: 100),
+          _buildInfoRow('Depth', depth, minLabelWidth: 100),
+          _buildInfoRow('Coordinates', coordinates, minLabelWidth: 100),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow(String title, String value) {
+  Widget _buildInfoRow(String title, String value, {double minLabelWidth = 80}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 60,
-            child: Text(
-              '$title:',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+        // 使用ConstrainedBox确保最小宽度
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: minLabelWidth, // 设置最小宽度
+            maxWidth: 120, // 设置最大宽度防止过大
+          ),
+          child: Text(
+            '$title:',
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+              fontSize: 14, // 适当减小字号
             ),
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(
-                color: Colors.black87,
-              ),
+        ),
+        const SizedBox(width: 8), // 增加间距
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: Colors.black87,
+              fontSize: 14, // 统一字号
+              letterSpacing: 0.3,
             ),
           ),
-        ],
+        ),
+      ],
       ),
     );
   }
@@ -470,4 +479,45 @@ class _BottomIcon extends StatelessWidget {
       ),
     );
   }
+}
+
+
+  // 添加弹窗显示方法
+void _showEmergencyContacts(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Emergency Contact'),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: GlobalContacts.contacts.length,
+          separatorBuilder: (_, __) => const Divider(),
+          itemBuilder: (context, index) => ListTile(
+            title: Text(GlobalContacts.contacts[index].isEmpty 
+              ? "Not Set Yet" 
+              : GlobalContacts.contacts[index]),
+            trailing: IconButton(
+              icon: const Icon(Icons.call, color: Colors.blue),
+              onPressed: () {
+                if (GlobalContacts.contacts[index].isNotEmpty) {
+                  // 这里可以添加模拟拨号逻辑
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Dial ${GlobalContacts.contacts[index]}"))
+                  );
+                }
+              },
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Close'),
+        ),
+      ],
+    ),
+  );
 }

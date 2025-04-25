@@ -140,7 +140,9 @@ class GuidelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('避险指南', style: TextStyle(color: Colors.black87)),
+        title: Text('Emergency Guidelines', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w700,
+          )
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black87),
@@ -234,7 +236,7 @@ class GuidelineScreen extends StatelessWidget {
             children: [
               Text(guide['content'], style: TextStyle(height: 1.5)),
               SizedBox(height: 16),
-              Text('具体步骤：', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Detailed Steps：', style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
               ...(guide['steps'] as List<String>).map((step) =>
                   Padding(
@@ -253,7 +255,7 @@ class GuidelineScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            child: Text('知道了'),
+            child: Text('Got it!'),
             onPressed: () => Navigator.pop(context),
           ),
         ],

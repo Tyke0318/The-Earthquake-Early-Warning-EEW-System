@@ -129,21 +129,21 @@ class MainPage extends StatelessWidget {
                   _quakeItem(
                     '3.5',
                     'Xinjiang Kizilsu Prefecture Atushi City',
-                    '2024-12-30 05:52:53',
+                    '2025-4-26 05:52:53',
                     '15 km',
                     '77.49°, 40.22°',
                   ),
                   _quakeItem(
                     '4.4',
                     'Taiwan Chiayi County',
-                    '2024-12-30 03:51:37',
+                    '2025-3-30 03:51:37',
                     '10 km',
                     '120.66°, 23.54°',
                   ),
                   _quakeItem(
                     '6.8',
                     'Qun Dao Islands',
-                    '2024-12-27 20:47:35',
+                    '2025-01-17 20:47:35',
                     '18 km',
                     '151.8°, 46.9°',
                   ),
@@ -275,8 +275,8 @@ class MainPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 24, backgroundColor: const Color.fromARGB(255, 203, 203, 203).withOpacity(0.1),
-            child: Icon(icon, size: 28, color: const Color.fromARGB(255, 38, 117, 255),),
+            radius: 24, backgroundColor: const Color.fromARGB(255, 80, 80, 80).withOpacity(0.1),
+            child: Icon(icon, size: 28, color: const Color.fromARGB(255, 27, 111, 255),),
           ),
           SizedBox(height: 8),
           Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,), textAlign: TextAlign.center,), 

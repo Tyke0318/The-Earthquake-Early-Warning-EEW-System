@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:eer/screens/global_contacts.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class _SettingScreenState extends State<SettingScreen> {
   bool soundAlert = true;
   bool popupAlert = true;
   double warningLevel = 4.0;
-  List<String> emergencyContacts = ['', '', '']; // For storing 3 contact numbers
+  List<String> emergencyContacts = ['+12 345-6789', '', '']; // For storing 3 contact numbers
   final List<TextEditingController> _controllers = [];
 
   @override
@@ -34,7 +35,10 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Warning settings"),
+        title: Text("Warning Settings", style: TextStyle(
+        fontWeight: FontWeight.w700, // 添加加粗样式
+        ),
+      ),
         automaticallyImplyLeading: false,
       ),
 
@@ -87,6 +91,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () {
                         setState(() {
                           emergencyContacts[index] = _controllers[index].text;
+                          GlobalContacts.contacts[index] = _controllers[index].text; // 同步到全局
                         });
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Contact ${index + 1} saved")),
@@ -97,6 +102,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   onSubmitted: (value) {
                     setState(() {
                       emergencyContacts[index] = value;
+                      GlobalContacts.contacts[index] = value; // 同步到全局
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Contact ${index + 1} saved")),

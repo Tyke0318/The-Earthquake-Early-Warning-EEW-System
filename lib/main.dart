@@ -1,5 +1,4 @@
 import 'package:eer/screens/alert_screen.dart';
-import 'package:eer/screens/emergency_tools_screen.dart';
 import 'package:eer/screens/shelter_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
@@ -36,7 +35,7 @@ class EEWApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/shelter': (context) => ShelterScreen(),
         '/alert': (context) => AlertScreen(),
-        '/tools': (context) => EmergencyToolsScreen(),
+        // '/tools': (context) => EmergencyToolsScreen(),
         '/guideline': (context) => GuidelineScreen(),
 
       },

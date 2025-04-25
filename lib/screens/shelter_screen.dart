@@ -5,8 +5,8 @@ class ShelterScreen extends StatelessWidget {
     {
       "name": "四川大学江安校区匹兹堡学院新大楼（南校区）",
       "distance": 0.2,
-      "capacity": "可容纳3000人",
-      "facilities": ["饮用水", "临时厕所", "医疗站"],
+      "capacity": "Capacity: 5,000",
+      "facilities": ["Drinking Water", "Temporary Toilets", "Medical Station"],
       "coordinates": [31.2287, 121.4812],
       "contact": "021-11223344",
       "openStatus": true,
@@ -14,8 +14,8 @@ class ShelterScreen extends StatelessWidget {
     {
       "name": "四川大学江安校区体育场",
       "distance": 0.8,
-      "capacity": "可容纳2000人",
-      "facilities": ["饮用水", "临时厕所"],
+      "capacity": "Capacity: 2,000",
+      "facilities": ["Drinking Water", "Temporary Toilets", "Material Distribution"],
       "coordinates": [31.2287, 121.4812],
       "contact": "021-11223344",
       "openStatus": false, // 临时关闭
@@ -23,35 +23,35 @@ class ShelterScreen extends StatelessWidget {
     {
       "name": "双流区体育馆应急避难所",
       "distance": 1.2,
-      "capacity": "可容纳5000人",
-      "facilities": ["医疗站", "饮用水", "临时厕所", "物资发放"],
+      "capacity": "Capacity: 5,000",
+      "facilities": ["Medical Station", "Drinking Water", "Temporary Toilets", "Material Distribution"],
       "coordinates": [31.2304, 121.4737],
       "contact": "021-12345678",
       "openStatus": true,
     },
     {
-      "name": "第一中学操场应急避难所",
-      "distance": 2.4,
-      "capacity": "可容纳3000人",
-      "facilities": ["医疗点", "简易帐篷", "充电站"],
+      "name": "成都七中林荫校区操场",
+      "distance": 3.4,
+      "capacity": "Capacity: 3,000",
+      "facilities": ["Medical Station", "Makeshift Tents"],
       "coordinates": [31.2356, 121.4789],
       "contact": "021-87654321",
       "openStatus": true
     },
     {
-      "name": "双流机场航站楼",
-      "distance": 4.1,
-      "capacity": "可容纳18000人",
-      "facilities": ["饮用水", "临时厕所", "医疗点", "简易帐篷"],
-      "coordinates": [31.2287, 121.4812],
-      "contact": "021-11223344",
+      "name": "成都石室中学操场应急避难所",
+      "distance": 3.8,
+      "capacity": "Capacity: 3,000",
+      "facilities": ["Medical Station", "Makeshift Tents"],
+      "coordinates": [31.2356, 121.4789],
+      "contact": "021-87654321",
       "openStatus": true
     },
     {
       "name": "人民公园应急避难所",
       "distance": 8.1,
-      "capacity": "可容纳2000人",
-      "facilities": ["饮用水", "临时厕所"],
+      "capacity": "Capacity: 2,000",
+      "facilities": ["Drinking Water", "Temporary Toilets"],
       "coordinates": [31.2287, 121.4812],
       "contact": "021-11223344",
       "openStatus": false, // 临时关闭
@@ -62,7 +62,10 @@ class ShelterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("紧急避难所"),
+        title: Text("Emergency Shelter", style: TextStyle(
+        fontWeight: FontWeight.w700, // 添加加粗样式
+          )
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.map),
@@ -95,7 +98,7 @@ class ShelterScreen extends StatelessWidget {
           SizedBox(width: 8),
           Expanded(
             child: Text(
-              "紧急提示：请选择最近的避难所，注意沿途安全标志",
+              "Urgent reminder: Please choose the nearest shelter and pay attention to the safety signs along the way",
               style: TextStyle(color: Colors.red[800]),
             ),
           ),
@@ -144,7 +147,7 @@ class ShelterScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        "临时关闭",
+                        "Temporarily Closed",
                         style: TextStyle(color: Colors.grey[600], fontSize: 12),
                       ),
                     ),
@@ -153,7 +156,7 @@ class ShelterScreen extends StatelessWidget {
               SizedBox(height: 8),
               Row(
                 children: [
-                  _buildInfoChip(Icons.directions_walk, "${shelter['distance']}公里"),
+                  _buildInfoChip(Icons.directions_walk, "${shelter['distance']}Kilometers"),
                   SizedBox(width: 8),
                   _buildInfoChip(Icons.people, shelter['capacity']),
                 ],
@@ -180,7 +183,7 @@ class ShelterScreen extends StatelessWidget {
               if (shelter['openStatus'])
                 TextButton.icon(
                   icon: Icon(Icons.directions, size: 18),
-                  label: Text("导航前往"),
+                  label: Text("Get Directions"),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.green,
                     padding: EdgeInsets.zero,
@@ -233,17 +236,17 @@ class ShelterScreen extends StatelessWidget {
             SizedBox(height: 8),
             Divider(),
             SizedBox(height: 8),
-            _buildDetailRow(Icons.location_on, "距离", "${shelter['distance']}公里"),
-            _buildDetailRow(Icons.people, "容量", shelter['capacity']),
-            _buildDetailRow(Icons.phone, "联系电话", shelter['contact']),
+            _buildDetailRow(Icons.location_on, "Distance", "${shelter['distance']}Kilometers"),
+            _buildDetailRow(Icons.people, "Capacity", shelter['capacity']),
+            _buildDetailRow(Icons.phone, "Contact", shelter['contact']),
             _buildDetailRow(
               shelter['openStatus'] ? Icons.check_circle : Icons.cancel,
-              "状态",
-              shelter['openStatus'] ? "开放中" : "临时关闭",
+              "Status",
+              shelter['openStatus'] ? "Opening" : "Temporarily Closed",
               color: shelter['openStatus'] ? Colors.green : Colors.red,
             ),
             SizedBox(height: 16),
-            Text("设施服务", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Facility Services", style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -263,7 +266,7 @@ class ShelterScreen extends StatelessWidget {
                 height: 48,
                 child: ElevatedButton.icon(
                   icon: Icon(Icons.directions),
-                  label: Text("开始导航"),
+                  label: Text("Get Directions"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
@@ -301,15 +304,15 @@ class ShelterScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("导航提示"),
-        content: Text("即将打开地图应用导航至 ${shelter['name']}"),
+        title: Text("Navigation Tips"),
+        content: Text("Launching navigation to ${shelter['name']}"),
         actions: [
           TextButton(
-            child: Text("取消"),
+            child: Text("Cancel"),
             onPressed: () => Navigator.pop(context),
           ),
           TextButton(
-            child: Text("确认"),
+            child: Text("Enter"),
             onPressed: () {
               Navigator.pop(context);
               // 这里调用实际的地图导航功能
@@ -326,8 +329,8 @@ class ShelterScreen extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
-          appBar: AppBar(title: Text("避难所地图")),
-          body: Center(child: Text("地图视图开发中")),
+          appBar: AppBar(title: Text("Shelter Map")),
+          body: Center(child: Text("Map View (Coming Soon)")),
         ),
       ),
     );

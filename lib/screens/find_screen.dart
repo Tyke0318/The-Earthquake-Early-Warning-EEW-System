@@ -12,7 +12,7 @@ class _FindScreenState extends State<FindScreen> {
   String? _searchQuery;
   String? _selectedTag;
   bool _isLoading = true;
-  final List<String> _tags = ["全部", "快讯", "科普", "救援"];
+  final List<String> _tags = ["All", "News", "Knowledge", "Rescue"];
 
   @override
   void initState() {
@@ -27,22 +27,22 @@ class _FindScreenState extends State<FindScreen> {
 
     final mockData = [
       {
-        "title": "甘肃发生4.3级地震",
+        "title": "甘肃发生6.3级地震",
         "subtitle": "震中位于陇南市，暂无人员伤亡报告",
         "time": "2025-04-09 19:30",
         "content": "详细报道内容...",
         "source": "中国地震台网",
         "isEmergency": true,
-        "tags": ["快讯"]
+        "tags": ["News"]
       },
       {
         "title": "专家解读近期频发地震",
         "subtitle": "地壳活动仍属正常范围，无需恐慌",
-        "time": "2025-04-08 14:15",
+        "time": "2025-04-25 14:15",
         "content": "专家分析内容...",
         "source": "地震科学研究院",
         "isEmergency": false,
-        "tags": ["科普"]
+        "tags": ["Knowledge"]
       },
       {
         "title": "四川开展地震应急演练",
@@ -51,7 +51,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "演练详情内容...",
         "source": "四川省应急管理厅",
         "isEmergency": false,
-        "tags": ["救援"]
+        "tags": ["Rescue"]
       },
       {
         "title": "云南发生3.5级地震",
@@ -60,7 +60,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "详细报道内容...",
         "source": "中国地震台网",
         "isEmergency": false,
-        "tags": ["快讯"]
+        "tags": ["News"]
       },
       {
         "title": "地震科普知识讲座",
@@ -69,7 +69,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "讲座详情内容...",
         "source": "地震科学研究院",
         "isEmergency": false,
-        "tags": ["科普"]
+        "tags": ["Knowledge"]
       },
       {
         "title": "青海开展地震应急救援演练",
@@ -78,7 +78,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "演练详情内容...",
         "source": "青海省应急管理厅",
         "isEmergency": false,
-        "tags": ["救援"]
+        "tags": ["Rescue"]
       },
       {
         "title": "北京发布地震预警",
@@ -87,7 +87,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "详细报道内容...",
         "source": "中国地震台网",
         "isEmergency": true,
-        "tags": ["快讯"]
+        "tags": ["News"]
       },
       {
         "title": "地震专家解读地震预警系统",
@@ -96,7 +96,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "专家分析内容...",
         "source": "地震科学研究院",
         "isEmergency": false,
-        "tags": ["科普"]
+        "tags": ["Knowledge"]
       },
       {
         "title": "上海开展地震应急演练",
@@ -105,7 +105,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "演练详情内容...",
         "source": "上海市应急管理厅",
         "isEmergency": false,
-        "tags": ["救援"]
+        "tags": ["Rescue"]
       },
       {
         "title": "地震应急救援装备展示",
@@ -114,7 +114,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "展示详情内容...",
         "source": "中国地震台网",
         "isEmergency": false,
-        "tags": ["救援"]
+        "tags": ["Rescue"]
       },
       {
         "title": "地震科普进校园活动",
@@ -123,7 +123,7 @@ class _FindScreenState extends State<FindScreen> {
         "content": "活动详情内容...",
         "source": "地震科学研究院",
         "isEmergency": false,
-        "tags": ["科普"]
+        "tags": ["Knowledge"]
       }
     ];
 
@@ -141,7 +141,7 @@ class _FindScreenState extends State<FindScreen> {
           item['subtitle'].toLowerCase().contains(_searchQuery!.toLowerCase());
 
       final matchesTag = _selectedTag == null ||
-          _selectedTag == "全部" ||
+          _selectedTag == "All" ||
           item['tags'].contains(_selectedTag);
 
       return matchesSearch && matchesTag;
@@ -275,7 +275,7 @@ class _FindScreenState extends State<FindScreen> {
   Widget _buildSearchField() {
     return TextField(
       decoration: InputDecoration(
-        hintText: "搜索地震资讯...",
+        hintText: "Search for earthquake information...",
         border: InputBorder.none,
         prefixIcon: Icon(Icons.search),
         suffixIcon: _searchQuery != null ? IconButton(
@@ -316,8 +316,8 @@ class _FindScreenState extends State<FindScreen> {
                   ? Center(
                 child: Text(
                   _searchQuery != null
-                      ? "没有找到相关资讯"
-                      : "暂无资讯数据",
+                      ? "No relevant information was found"
+                      : "No information data available for now",
                   style: TextStyle(color: Colors.grey),
                 ),
               )

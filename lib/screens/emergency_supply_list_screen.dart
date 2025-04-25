@@ -113,7 +113,7 @@ class EmergencySupplyListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("应急物资清单"),
+        title: Text("List of Emergency Supplies"),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
