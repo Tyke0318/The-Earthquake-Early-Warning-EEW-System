@@ -3,7 +3,7 @@ This is the project of the **Interface Design Methodology** course. Here we will
 
 ## 日常使用：
 
-在桌面打开cmd，运行终端：
+在桌面打开cmd，运行终端（运行完不要关闭，会自动跳出模拟器）：
 
 ```
 flutter emulators --launch Pixel8Pro
@@ -12,14 +12,18 @@ flutter emulators --launch Pixel8Pro
 cd至project文件所在处，在终端中打开，运行下面的命令行：
 
 ```
-flutter clean
-flutter pub get
 flutter run
 ```
 
 即可。
 
+如果要更改依赖，refer to "pubspec.yaml"文件中的dependencies，添加或删去依赖，并运行下面的命令：
 
+```
+flutter clean
+flutter pub get
+flutter run
+```
 
 Here are some official reminders:
 

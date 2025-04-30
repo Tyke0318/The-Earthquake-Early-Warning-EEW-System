@@ -277,48 +277,67 @@ class _AlertScreenState extends State<AlertScreen> {
 
   // 添加震级选择对话框方法
 void _showMagnitudeDialog() {
-  // 临时变量保存输入值
   double tempMagnitude = _selectedMagnitude;
-  
+  String? errorText; // 错误提示
+
   showDialog(
     context: context,
     builder: (context) {
       return StatefulBuilder(
         builder: (context, setDialogState) {
           return AlertDialog(
-            title: const Text('Select warning magnitude'),
+            title: const Text('Select Warning Magnitude'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // 输入框
                 TextField(
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                    labelText: 'Enter warning magnitude',
+                  decoration: InputDecoration(
+                    labelText: 'Enter Warning Magnitude',
                     hintText: 'Example: 6.5',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.landscape_rounded),
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.landscape_rounded),
+                    errorText: errorText, // 错误提示
                   ),
                   onChanged: (value) {
                     // 实时验证输入
                     final parsed = double.tryParse(value);
-                    if (parsed != null && parsed >= 0) {
-                      setDialogState(() => tempMagnitude = parsed);
+                    if (parsed == null || parsed < 0 || parsed > 12) {
+                      setDialogState(() {
+                        errorText = 'Please enter a value between 0 and 12';
+                      });
+                    } else {
+                      setDialogState(() {
+                        tempMagnitude = parsed;
+                        errorText = null;
+                      });
                     }
                   },
                 ),
-                
-                // 快捷按钮
                 const SizedBox(height: 16),
                 Wrap(
                   spacing: 8,
-                  children: [5.0, 6.0, 7.0].map((mag) {
+                  children: [3.0, 5.0, 7.0].map((mag) {
+                    Color chipColor;
+                    // 根据震级设置颜色
+                    if (mag < 4.5) {
+                      chipColor = Colors.green;
+                    } else if (mag < 6.0) {
+                      chipColor = Colors.orange;
+                    } else {
+                      chipColor = Colors.red;
+                    }
                     return ChoiceChip(
-                      label: Text("${mag}M"),
+                      label: Text("${mag}M", style: const TextStyle(color: Colors.white)),
                       selected: tempMagnitude == mag,
+                      selectedColor: chipColor,
+                      backgroundColor: chipColor.withOpacity(0.6),
                       onSelected: (selected) {
                         if (selected) {
-                          setDialogState(() => tempMagnitude = mag);
+                          setDialogState(() {
+                            tempMagnitude = mag;
+                            errorText = null; // 清除错误提示
+                          });
                         }
                       },
                     );
@@ -332,15 +351,17 @@ void _showMagnitudeDialog() {
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  // 更新主界面状态
-                  setState(() {
-                    _selectedMagnitude = tempMagnitude;
-                    _setWarningColor(tempMagnitude);
-                    _initCountdown(); // 关键：重新初始化倒计时
-                  });
-                  Navigator.pop(context);
-                },
+                // 更新主界面状态
+                onPressed: (errorText == null)
+                    ? () {
+                        setState(() {
+                          _selectedMagnitude = tempMagnitude;
+                          _setWarningColor(tempMagnitude);
+                          _initCountdown(); // 关键：重新初始化倒计时
+                        });
+                        Navigator.pop(context);
+                      }
+                    : null, // 输入非法时禁用按钮
                 child: const Text('Enter'),
               ),
             ],
@@ -350,6 +371,7 @@ void _showMagnitudeDialog() {
     },
   );
 }
+
 
   Widget _buildQuakeInfo({
     required String magnitude,
