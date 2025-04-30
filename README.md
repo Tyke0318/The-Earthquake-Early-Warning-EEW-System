@@ -177,43 +177,29 @@ cd %ANDROID_HOME%\cmdline-tools\latest\bin
 avdmanager list device
 ```
 
-使用下面的命令来创建一个新的虚拟设备。假设你选择了一个 Pixel 4 设备，命令如下：
-
-```
-avdmanager create avd -n Pixel4 -k "system-images;android-33;google_apis;x86_64"
-```
-
-这个命令会创建一个名为 `Pixel4` 的模拟器。
-
-使用 `emulator` 命令启动模拟器：
-
-```
-emulator -avd Pixel4
-```
-
-这会启动你刚刚创建的 `Pixel4` 模拟器。
-
-注意，Pixel4是比较老旧的机型了，你可以安装下面更新的机型，以提高屏幕大小和分辨率：
-
-首先删除 Pixel 4：
-
-```
-avdmanager delete avd -n Pixel4
-```
+使用下面的命令来创建一个新的虚拟设备。
 
 创建 Pixel 8 Pro 虚拟机： 首先，你需要确保已经下载了适合 `Pixel 8 Pro` 的系统镜像。
 
-使用使用 `android-33` 来创建虚拟设备：（最新为android-34）
+使用 `android-33` 来创建虚拟设备，这个命令会创建一个名为 `Pixel8Pro` 的模拟器。：（最新为android-34）
 
 ```
 avdmanager create avd -n Pixel8Pro -k "system-images;android-33;google_apis;x86_64" -d pixel_8_pro
 ```
 
-Pixel 8 Pro： 你可以使用以下命令启动模拟器：
+使用以下 `emulator` 命令启动模拟器`Pixel8Pro`：
 
 ```
 emulator -avd Pixel8Pro
 ```
+
+这会启动你刚刚创建的 `Pixel8Pro` 模拟器。注意，如果是比较老旧的机型，可以删除设备，安装更新的机型以提高屏幕大小和分辨率。比如删除 Pixel 4的命令：
+
+```
+avdmanager delete avd -n Pixel4
+```
+
+---
 
 如果你使用 Flutter 来启动模拟器：
 
@@ -282,3 +268,5 @@ flutter run
 
 
 By Tyke, 2025.04.25
+
+Updated 2025.04.30
