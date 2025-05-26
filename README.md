@@ -1,6 +1,10 @@
 # The-Earthquake-Early-Warning-EEW-System
 This is the project of the **Interface Design Methodology** course. Here we will develop a EEW system by flutter, in order to run in Android phones.
 
+由于有些功能（如地图）功能涉及到联网使用，如果不在Android Studio中或者用实体安卓机来进行运行的话，可能会出现无法联网的情况。建议使用自己的安卓手机来运行此project。
+
+下面是针对直接在电脑上方便调试的内容。
+
 ## 日常使用：
 
 在桌面打开cmd，运行终端（运行完不要关闭，会自动跳出模拟器）：
