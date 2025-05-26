@@ -1,0 +1,107 @@
+[
+  {
+    "magnitude": "3.5",
+    "location": "Xinjiang Kizilsu Prefecture Atushi City",
+    "time": "2025-4-26 05:52:53",
+    "depth": "15 km",
+    "coords": "40.22, 77.49"
+  },
+  {
+    "magnitude": "6.8",
+    "location": "Qun Dao Islands",
+    "time": "2025-1-17 20:47:35",
+    "depth": "18 km",
+    "coords": "46.9, 151.8"
+  },
+  {
+    "magnitude": "3.3",
+    "location": "Xinjiang Aksu Prefecture Kuche City",
+    "time": "2024-12-27 07:32:36",
+    "depth": "20 km",
+    "coords": "41.89, 83.01"
+  },
+  {
+    "magnitude": "5.8",
+    "location": "Japan Southeast Offshore",
+    "time": "2024-12-27 05:02:24",
+    "depth": "30 km",
+    "coords": "30.45, 142.05"
+  },
+  {
+    "magnitude": "3.1",
+    "location": "Sichuan Luzhou City Longma District",
+    "time": "2024-12-26 17:20:54",
+    "depth": "8 km",
+    "coords": "29.05, 105.38"
+  },
+  {
+    "magnitude": "4.8",
+    "location": "Taiwan Hualien County Offshore",
+    "time": "2024-12-26 16:08:50",
+    "depth": "31 km",
+    "coords": "23.97, 121.9"
+  },
+  {
+    "magnitude": "3.8",
+    "location": "Xinjiang Aksu Prefecture Kuche City",
+    "time": "2024-12-26 10:22:52",
+    "depth": "17 km",
+    "coords": "41.4, 83.83"
+  },
+  {
+    "magnitude": "3.4",
+    "location": "Inner Mongolia Autonomous Region Ar Horqin Left Banner",
+    "time": "2024-12-25 10:11:26",
+    "depth": "15 km",
+    "coords": "40.04, 106.62"
+  },
+  {
+    "magnitude": "3.0",
+    "location": "Ningsia Yinchuan City Yongning County",
+    "time": "2024-12-24 20:56:06",
+    "depth": "14 km",
+    "coords": "38.4, 106.23"
+  },
+  {
+    "magnitude": "2.8",
+    "location": "Ningsia Shizuishan City Pingluo County",
+    "time": "2024-12-24 01:12:45",
+    "depth": "20 km",
+    "coords": "38.81, 106.37"
+  },
+  {
+    "magnitude": "5.9",
+    "location": "Cuba Southern Offshore",
+    "time": "2024-12-23 14:00:55",
+    "depth": "10 km",
+    "coords": "19.8, -76.5"
+  },
+  {
+    "magnitude": "3.1",
+    "location": "Tibet Nyingchi City Mainling County",
+    "time": "2024-12-23 06:37:39",
+    "depth": "10 km",
+    "coords": "28.82, 94.95"
+  },
+  {
+    "magnitude": "5.5",
+    "location": "United States Alaska South Offshore",
+    "time": "2024-12-22 11:55:59",
+    "depth": "10 km",
+    "coords": "55.95, -154.15"
+  },
+  {
+    "magnitude": "3.0",
+    "location": "Xinjiang Aksu Prefecture Shaya County",
+    "time": "2024-12-22 11:07:30",
+    "depth": "10 km",
+    "coords": "40.74, 82.61"
+  },
+  {
+    "magnitude": "3.4",
+    "location": "Tibet Ali Prefecture Rutog County",
+    "time": "2024-12-21 13:01:58",
+    "depth": "10 km",
+    "coords": "34.15, 78.88"
+  }
+]
