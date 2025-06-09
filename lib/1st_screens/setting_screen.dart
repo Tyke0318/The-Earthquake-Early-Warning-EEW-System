@@ -10,6 +10,8 @@ class SettingScreen extends StatefulWidget {
 class SettingScreenState extends State<SettingScreen> {
   bool soundAlert = true;
   bool popupAlert = true;
+  bool vibration = true; // 新增：震动提醒
+  bool smartLight = false; // 新增：智能灯提醒
   double warningLevel = 4.0;
   List<String> emergencyContacts = ['+12 345-6789', '', ''];
   final List<TextEditingController> _controllers = [];
@@ -52,6 +54,18 @@ class SettingScreenState extends State<SettingScreen> {
               title: Text("PopUp Reminder"),
               value: popupAlert,
               onChanged: (val) => setState(() => popupAlert = val),
+            ),
+            // 新增：Vibration 开关
+            SwitchListTile(
+              title: Text("Vibration Alert"),
+              value: vibration,
+              onChanged: (val) => setState(() => vibration = val),
+            ),
+            // 新增：Smart Light 开关
+            SwitchListTile(
+              title: Text("Smart Light Alert"),
+              value: smartLight,
+              onChanged: (val) => setState(() => smartLight = val),
             ),
             SizedBox(height: 20),
             Row(

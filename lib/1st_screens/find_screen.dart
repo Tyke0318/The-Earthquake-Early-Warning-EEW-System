@@ -93,11 +93,11 @@ class FindScreenState extends State<FindScreen> {
                 ),
                 SizedBox(height: 24),
                 Text(
-                  "来源：${news['source']}",
+                  "Source：${news['source']}",
                   style: TextStyle(color: Colors.grey),
                 ),
                 Text(
-                  "发布时间：${news['time']}",
+                  "Release Time：${news['time']}",
                   style: TextStyle(color: Colors.grey),
                 ),
               ],
@@ -195,7 +195,7 @@ class FindScreenState extends State<FindScreen> {
   Widget _buildSearchField() {
     return TextField(
       decoration: InputDecoration(
-        hintText: "Search ...",
+        hintText: "Search here ...",
         border: InputBorder.none,
         prefixIcon: Icon(Icons.search),
         suffixIcon: _searchQuery != null ? IconButton(
