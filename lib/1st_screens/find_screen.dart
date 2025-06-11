@@ -41,7 +41,7 @@ class FindScreenState extends State<FindScreen> {
     setState(() => _isLoading = true);
 
     // 模拟网络请求延迟
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 200)); // 改为300毫秒
 
     // 模拟数据
     final mockData = await loadMockData();
@@ -192,21 +192,13 @@ class FindScreenState extends State<FindScreen> {
   }
 
   /// 构建搜索框
+  /// 构建搜索框
   Widget _buildSearchField() {
     return TextField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: "Search here ...",
         border: InputBorder.none,
         prefixIcon: Icon(Icons.search),
-        suffixIcon: _searchQuery != null ? IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            setState(() {
-              _searchQuery = null;
-              filteredNews = _filterNews();
-            });
-          },
-        ) : null,
       ),
       onChanged: (query) {
         setState(() {

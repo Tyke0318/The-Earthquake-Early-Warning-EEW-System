@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../1st_screens/setting_screen.dart';
 import 'map_page.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 class AlertScreen extends StatefulWidget {
   const AlertScreen({super.key});
 
@@ -15,16 +15,56 @@ class AlertScreen extends StatefulWidget {
 
 class AlertScreenState extends State<AlertScreen> {
   int _countdown = 30; // 动态倒计时
-  double _selectedMagnitude = 3.5; // 默认3.5级
+  double _selectedMagnitude = 5.0; // 默认3.5级
   Timer? _timer;
   Color _warningColor = Colors.green; // 根据预警等级变化的颜色
-
+  final AudioPlayer _audioPlayer = AudioPlayer(); // 音频播放器实例
+  bool _isPlayingAlarm = false;
   @override
   void initState() {
     super.initState();
     startCountdown();
     // 模拟根据震级设置预警颜色
     _setWarningColor(_selectedMagnitude); // 初始化时设置颜色
+    _playAlarmSound(); // 进入页面时播放警报声
+  }
+
+  Future<void> _playAlarmSound() async {
+    if (_isPlayingAlarm) return;
+
+    _isPlayingAlarm = true;
+
+    setState(() {
+      _isPlayingAlarm = true;
+    });
+
+    try {
+      // 根据震级设置音量
+      double volume = 1.0;
+      if (_selectedMagnitude > 6.0) {
+        volume = 1.0; // 最大音量
+      } else if (_selectedMagnitude > 4.5) {
+        volume = 0.7; // 中等音量
+      } else {
+        volume = 0.5; // 较低音量
+      }
+
+      await _audioPlayer.setVolume(volume);
+      await _audioPlayer.play(AssetSource('sounds/earthquake_alarm.mp3'));
+    } catch (e) {
+      debugPrint('Error playing alarm sound: $e');
+    }
+  }
+  Future<void> _stopAlarm() async {
+    try {
+      await _audioPlayer.stop();
+    } catch (e) {
+      debugPrint('Error stopping alarm sound: $e');
+    } finally {
+      setState(() {
+        _isPlayingAlarm = false;
+      });
+    }
   }
 
   // 新增方法：根据震级初始化倒计时
@@ -71,6 +111,7 @@ class AlertScreenState extends State<AlertScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _audioPlayer.dispose(); // 释放音频资源
     super.dispose();
   }
 
@@ -127,7 +168,7 @@ class AlertScreenState extends State<AlertScreen> {
                   // 当前位置文字
                   Expanded(
                     child: Text(
-                      "双流区四川大学江安校区",
+                      "四川大学江安校区（南校区）",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[600],

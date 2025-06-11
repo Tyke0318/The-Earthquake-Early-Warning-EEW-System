@@ -26,27 +26,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-
   @override
   void initState() {
     super.initState();
     _fetchAndUpdateEarthquakeData();
   }
+
   Future<void> _fetchAndUpdateEarthquakeData() async {
     try {
       final url = Uri.parse(
-          'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson');
+          'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // 👇 新解析
         final converted = convertUSGStoLocalFormat(response.body);
-
-        // 📦 写入本地文件
         final dir = await getApplicationDocumentsDirectory();
         final file = File('${dir.path}/quake_data.json');
         await file.writeAsString(jsonEncode(converted));
-
         debugPrint("✅ Earthquake data updated from USGS");
       } else {
         debugPrint("❌ Failed to fetch USGS data: ${response.statusCode}");
@@ -57,7 +53,6 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   // 当前选中的底部导航栏索引
-  // 0=首页，1=搜索页，2=设置页
   int _selectedIndex = 0;
 
   // 底部导航栏对应的页面组件列表
@@ -68,17 +63,16 @@ class HomeScreenState extends State<HomeScreen> {
   ];
 
   /// 底部导航栏项目点击事件处理
-  /// [index] 被点击项目的索引
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;  // 更新当前选中索引，触发界面重建
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, // 填充安全区域
+      extendBody: true,
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -93,16 +87,57 @@ class HomeScreenState extends State<HomeScreen> {
   }
 }
 
-/// 首页主要内容组件
-class MainPage extends StatelessWidget {
+/// 首页主要内容组件（修改为StatefulWidget以支持刷新）
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  /// 下拉刷新回调方法
+  Future<void> _onRefresh() async {
+    try {
+      // 触发数据更新
+      await _fetchAndUpdateEarthquakeData();
+      // 显示刷新成功提示
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('地震数据已更新')),
+      );
+    } catch (e) {
+      // 显示刷新失败提示
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('更新数据失败: $e')),
+      );
+    }
+  }
+
+  /// 复用HomeScreen中的数据获取方法（需确保convertUSGStoLocalFormat已定义）
+  Future<void> _fetchAndUpdateEarthquakeData() async {
+    try {
+      final url = Uri.parse(
+          'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // 解析USGS数据格式（假设convertUSGStoLocalFormat方法存在）
+        final converted = convertUSGStoLocalFormat(response.body);
+        final dir = await getApplicationDocumentsDirectory();
+        final file = File('${dir.path}/quake_data.json');
+        await file.writeAsString(jsonEncode(converted));
+        debugPrint("✅ 地震数据从USGS更新成功");
+      } else {
+        debugPrint("❌ 获取USGS数据失败: ${response.statusCode}");
+        throw Exception('获取数据失败: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint("⚠️ 获取USGS数据错误: $e");
+      rethrow;
+    }
+  }
+
   /// 根据震级返回对应的颜色标识
-  /// [magnitude] 地震震级字符串
-  /// 返回颜色值：
-  ///   - ≥6.0：红色（严重）
-  ///   - ≥4.5：橙色（中等）
-  ///   - 其他：绿色（轻微）
   Color magnitudeToColor(String magnitude) {
     double mag = double.tryParse(magnitude) ?? 0.0;
     if (mag >= 6.0) return Colors.red;
@@ -110,6 +145,7 @@ class MainPage extends StatelessWidget {
     return Colors.green;
   }
 
+  /// 地震记录列表项组件
   Widget _quakeItem(BuildContext context, String magnitude, String location,
       String time, String depth, String coords, bool isNew) {
     return GestureDetector(
@@ -141,11 +177,11 @@ class MainPage extends StatelessWidget {
                   radius: 22,
                   backgroundColor: magnitudeToColor(magnitude),
                   child: Text(
-                      magnitude,
-                      style: TextStyle(color: Colors.white, fontSize: 16)
+                    magnitude,
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +195,7 @@ class MainPage extends StatelessWidget {
                 )
               ],
             ),
-            // 添加NEW标志
+            // 新记录标记
             if (isNew)
               Positioned(
                 left: 2,
@@ -170,7 +206,7 @@ class MainPage extends StatelessWidget {
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text(
+                  child: const Text(
                     "NEW",
                     style: TextStyle(
                       color: Colors.white,
@@ -207,7 +243,7 @@ class MainPage extends StatelessWidget {
                     BoxShadow(
                       color: Colors.grey.withAlpha((0.3 * 255).round()),
                       blurRadius: 8,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -238,42 +274,41 @@ class MainPage extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 10),
-              // 网格按钮部分 - 使用固定高度
-              // 直接替换原来的 GridView.count 部分
+              // 网格按钮部分
               SizedBox(
-                height: 100, // 更高点，适应新按钮
+                height: 100,
                 child: GridView.count(
                   crossAxisCount: 4,
-                  childAspectRatio: 0.8, // Adjust this value (default is 1.0)
+                  childAspectRatio: 0.8,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _buildFeatureButton(
-                      context: context, // 加上这行！
+                      context: context,
                       icon: Icons.warning,
                       label: "Alert",
                       destination: AlertScreen(),
                       color: Colors.redAccent,
                     ),
                     _buildFeatureButton(
-                      context: context, // 加上这行！
+                      context: context,
                       icon: Icons.place_outlined,
                       label: "Shelters",
                       destination: ShelterScreen(),
                       color: Colors.teal,
                     ),
                     _buildFeatureButton(
-                      context: context, // 加上这行！
+                      context: context,
                       icon: Icons.build,
                       label: "Tools",
                       destination: EmergencySupplyListScreen(),
                       color: Colors.orange,
                     ),
                     _buildFeatureButton(
-                      context: context, // 加上这行！
+                      context: context,
                       icon: Icons.menu_book,
                       label: "Guidelines",
                       destination: GuidelineScreen(),
@@ -290,39 +325,41 @@ class MainPage extends StatelessWidget {
               ),
               const SizedBox(height: 14),
 
-              // 地震记录列表 - 使用Flexible替代Expanded
+              // 地震记录列表（包裹RefreshIndicator实现下拉刷新）
               Flexible(
+                child: RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: FutureBuilder<List<Quake>>(
+                    future: _loadQuakeData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error loading data: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No earthquake data available'));
+                      }
 
-                child: FutureBuilder<List<Quake>>(
-                  future: _loadQuakeData(), // 加载JSON数据的方法
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error loading data'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(child: Text('No earthquake data available'));
-                    }
-
-                    final quakeData = snapshot.data!;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: quakeData.length,
-                      itemBuilder: (context, index) {
-                        final quake = quakeData[index];
-                        return _quakeItem(
-                          context,
-                          quake.magnitude,
-                          quake.location,
-                          quake.time,
-                          quake.depth,
-                          quake.coords,
-                          index == 0, // 第一条数据标记为NEW
-                        );
-                      },
-                    );
-                  },
+                      final quakeData = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: quakeData.length,
+                        itemBuilder: (context, index) {
+                          final quake = quakeData[index];
+                          return _quakeItem(
+                            context,
+                            quake.magnitude,
+                            quake.location,
+                            quake.time,
+                            quake.depth,
+                            quake.coords,
+                            index == 0, // 第一条记录标记为NEW
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -333,8 +370,9 @@ class MainPage extends StatelessWidget {
   }
 }
 
+/// 功能按钮组件
 Widget _buildFeatureButton({
-  required BuildContext context, // 加在这里！
+  required BuildContext context,
   required IconData icon,
   required String label,
   required Widget destination,
@@ -359,7 +397,7 @@ Widget _buildFeatureButton({
               BoxShadow(
                 color: Colors.grey.withAlpha((0.3 * 255).round()),
                 blurRadius: 6,
-                offset: Offset(2, 4),
+                offset: const Offset(2, 4),
               ),
             ],
           ),
@@ -369,10 +407,10 @@ Widget _buildFeatureButton({
             size: 28,
           ),
         ),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -383,22 +421,30 @@ Widget _buildFeatureButton({
   );
 }
 
+/// 加载本地地震数据
 Future<List<Quake>> _loadQuakeData() async {
   try {
-    // 获取可写目录
     final dir = await getApplicationDocumentsDirectory();
-
     final file = File('${dir.path}/quake_data.json');
 
-    // 读取文件内容
+    if (!await file.exists()) {
+      throw Exception('File not found');
+    }
+
     final String response = await file.readAsString();
 
-    // 解析 JSON
-    final List<dynamic> data = json.decode(response);
+    if (response.trim().isEmpty) {
+      throw Exception('File is empty');
+    }
 
-    // 转换为 Quake 对象列表
+    final dynamic data = json.decode(response);
+    if (data is! List) {
+      throw Exception('Invalid data format - expected List');
+    }
+
     return data.map((json) => Quake.fromJson(json)).toList();
   } catch (e) {
+    print('Error loading quake data: $e');
     return [];
   }
 }

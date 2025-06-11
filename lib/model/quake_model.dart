@@ -27,26 +27,42 @@ class Quake {
 
 
 List<Map<String, dynamic>> convertUSGStoLocalFormat(String geoJson) {
-  final data = jsonDecode(geoJson);
-  final features = data['features'] as List;
+  try {
+    final data = jsonDecode(geoJson);
+    final features = data['features'] as List? ?? [];
 
-  return features.map<Map<String, dynamic>>((feature) {
-    final prop = feature['properties'];
-    final geom = feature['geometry'];
+    return features.map<Map<String, dynamic>>((feature) {
+      try {
+        final prop = feature['properties'] ?? {};
+        final geom = feature['geometry'] ?? {};
 
-    final double? mag = prop['mag'];
-    final String? location = prop['place'];
-    final int? timestamp = prop['time'];
-    final List coords = geom['coordinates']; // [lng, lat, depth]
+        final double? mag = prop['mag'] is num ? prop['mag'].toDouble() : null;
+        final String? location = prop['place'];
+        final int? timestamp = prop['time'] is int ? prop['time'] : null;
+        final List coords = geom['coordinates'] is List ? geom['coordinates'] : [0, 0, 0];
 
-    return {
-      "magnitude": mag?.toStringAsFixed(1) ?? "0.0",
-      "location": location ?? "Unknown location",
-      "time": _formatUSGSTime(timestamp),
-      "depth": "${coords.length >= 3 ? coords[2].toStringAsFixed(0) : '0'} km",
-      "coords": "${coords[1].toStringAsFixed(2)}, ${coords[0].toStringAsFixed(2)}",
-    };
-  }).toList();
+        return {
+          "magnitude": mag?.toStringAsFixed(1) ?? "0.0",
+          "location": location ?? "Unknown location",
+          "time": _formatUSGSTime(timestamp),
+          "depth": "${coords.length >= 3 ? coords[2].toStringAsFixed(0) : '0'} km",
+          "coords": "${coords[1].toStringAsFixed(2)}, ${coords[0].toStringAsFixed(2)}",
+        };
+      } catch (e) {
+        print('Error processing feature: $e');
+        return {
+          "magnitude": "0.0",
+          "location": "Error in data",
+          "time": "Unknown time",
+          "depth": "0 km",
+          "coords": "0.00, 0.00",
+        };
+      }
+    }).toList();
+  } catch (e) {
+    print('Error converting USGS data: $e');
+    return [];
+  }
 }
 
 String _formatUSGSTime(int? millisSinceEpoch) {
